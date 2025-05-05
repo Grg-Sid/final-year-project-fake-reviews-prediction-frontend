@@ -1,43 +1,13 @@
 import axios from "axios";
 
-// Create axios instance with base URL and default headers
+// Create axios instance with base URL
 const api = axios.create({
-  // baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api",
-  baseURL: "http://localhost:5000/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: "http://localhost:8000",
 });
 
-// Add request interceptor to include auth token if available
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Add response interceptor to handle common errors
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Handle 401 Unauthorized errors - redirect to login
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-      // Redirecting could also be handled by a central auth service
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Export API methods for different entities
+// Export API methods
 export default {
-  // Analyses related endpoints
+  // Basic HTTP methods
   get: (url) => api.get(url),
   post: (url, data) => api.post(url, data),
   put: (url, data) => api.put(url, data),
@@ -50,9 +20,7 @@ export default {
     formData.append("analysis_type", analysisType);
 
     return api.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      // DO NOT manually set Content-Type — let Axios handle it
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total

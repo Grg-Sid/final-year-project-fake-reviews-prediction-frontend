@@ -72,11 +72,9 @@ function FileUpload({ onUploadSuccess }) {
       const formData = new FormData();
       formData.append("file", file);
 
-      const uploadResponse = await api.post("/uploads/review-file", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      console.log(formData);
+
+      const uploadResponse = await api.post("/uploads/review-file", formData);
 
       // Step 2: Process the uploaded file
       const analysisResponse = await api.post(

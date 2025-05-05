@@ -171,137 +171,66 @@ function Home() {
         </Link>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-12">
-        <h2 className="text-xl font-semibold text-blue-800 mb-4">
-          How It Works
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center">
-            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-sm">
-              <span className="text-2xl font-bold text-blue-600">1</span>
-            </div>
-            <h3 className="font-medium text-blue-800 mb-2">Upload</h3>
-            <p className="text-blue-700 text-sm">
-              Upload your reviews file or enter a single review for analysis
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-sm">
-              <span className="text-2xl font-bold text-blue-600">2</span>
-            </div>
-            <h3 className="font-medium text-blue-800 mb-2">Process</h3>
-            <p className="text-blue-700 text-sm">
-              Our AI system analyzes each review for authenticity indicators
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-sm">
-              <span className="text-2xl font-bold text-blue-600">3</span>
-            </div>
-            <h3 className="font-medium text-blue-800 mb-2">Results</h3>
-            <p className="text-blue-700 text-sm">
-              Get detailed reports with flagged reviews and confidence scores
-            </p>
+      <div className="flex flex-wrap gap-6 mb-12">
+        {/* Left Box - How It Works */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 w-full lg:w-[48%]">
+          <h2 className="text-xl font-semibold text-blue-800 mb-4">
+            How It Works
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[1, 2, 3].map((num, idx) => {
+              const steps = ["Upload", "Process", "Results"];
+              const descriptions = [
+                "Upload your reviews file or enter a single review for analysis",
+                "Our AI system analyzes each review for authenticity indicators",
+                "Get detailed reports with flagged reviews and confidence scores",
+              ];
+              return (
+                <div className="text-center" key={num}>
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-sm">
+                    <span className="text-2xl font-bold text-blue-600">
+                      {num}
+                    </span>
+                  </div>
+                  <h3 className="font-medium text-blue-800 mb-2">
+                    {steps[idx]}
+                  </h3>
+                  <p className="text-blue-700 text-sm">{descriptions[idx]}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        {/* Right Box - Features */}
+        <div className="bg-white border border-gray-200 rounded-lg shadow p-6 w-full lg:w-[48%]">
           <h2 className="text-xl font-semibold mb-4">Features</h2>
           <ul className="space-y-3">
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-green-500 mr-2 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <span>AI-powered authenticity detection</span>
-            </li>
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-green-500 mr-2 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <span>Batch processing for multiple reviews</span>
-            </li>
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-green-500 mr-2 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <span>CSV and PDF file support</span>
-            </li>
-            <li className="flex items-start">
-              <svg
-                className="w-5 h-5 text-green-500 mr-2 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                ></path>
-              </svg>
-              <span>Detailed downloadable reports</span>
-            </li>
+            {[
+              "AI-powered authenticity detection",
+              "Batch processing for multiple reviews",
+              "CSV and PDF file support",
+              "Detailed downloadable reports",
+            ].map((feature, index) => (
+              <li className="flex items-start" key={index}>
+                <svg
+                  className="w-5 h-5 text-green-500 mr-2 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
           </ul>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Getting Started</h2>
-          <p className="text-gray-600 mb-4">
-            Choose one of the options below to start analyzing your reviews:
-          </p>
-          <div className="flex flex-col space-y-3">
-            <Link
-              to="/upload"
-              className="px-4 py-2 bg-blue-600 text-white rounded text-center hover:bg-blue-700"
-            >
-              Upload Reviews File
-            </Link>
-            <Link
-              to="/analyze"
-              className="px-4 py-2 bg-purple-600 text-white rounded text-center hover:bg-purple-700"
-            >
-              Analyze Single Review
-            </Link>
-          </div>
         </div>
       </div>
     </div>

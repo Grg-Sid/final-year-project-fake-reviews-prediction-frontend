@@ -17,7 +17,7 @@ function SingleReviewAnalysis() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "review_content" ? value : parseInt(value) || 0,
+      [name]: name === "review_content" ? value : parseInt(value),
     });
   };
 
@@ -130,7 +130,7 @@ function SingleReviewAnalysis() {
 
           {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
-          <div className="flex justify-end">
+          <div className="flex justify-center mt-6">
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
@@ -179,7 +179,7 @@ function SingleReviewAnalysis() {
 
           <div className="mb-4">
             <div className="flex items-center mb-3">
-              <span className="font-medium mr-2">Status:</span>
+              <span className="font-medium mr-2">Status: </span>
               {result.flagged ? (
                 <span className="bg-red-100 text-red-800 text-sm px-2.5 py-0.5 rounded-full">
                   Flagged ⚠️
@@ -192,14 +192,14 @@ function SingleReviewAnalysis() {
             </div>
 
             <div className="mb-3">
-              <span className="font-medium">Confidence:</span>
+              <span className="font-medium">Confidence: </span>
               <span className="ml-2">
                 {(result.confidence * 100).toFixed(1)}%
               </span>
             </div>
 
             <div>
-              <span className="font-medium">Process Time:</span>
+              <span className="font-medium">Process Time: </span>
               <span className="ml-2">
                 {result.process_time.toFixed(3)} seconds
               </span>
@@ -207,7 +207,7 @@ function SingleReviewAnalysis() {
           </div>
 
           <div className="bg-gray-50 rounded p-4 mb-4">
-            <h3 className="font-medium mb-2">Review Content:</h3>
+            <h3 className="font-medium mb-2">Review Content: </h3>
             <p className="text-gray-700">{formData.review_content}</p>
           </div>
 

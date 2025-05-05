@@ -72,13 +72,6 @@ function Dashboard() {
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Analysis Dashboard</h1>
-
-        <Link
-          to="/upload"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          New Analysis
-        </Link>
       </div>
 
       {error ? (
@@ -107,7 +100,7 @@ function Dashboard() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200 text-left">
               {analyses.map((analysis) => (
                 <tr key={analysis.analysis_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -133,7 +126,7 @@ function Dashboard() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {analysis.analysis_type}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <Link
                       to={getAnalysisLink(analysis)}
                       className={`text-blue-600 hover:text-blue-900
@@ -173,6 +166,15 @@ function Dashboard() {
           </Link>
         </div>
       )}
+
+      <div className="mt-60 flex justify-start">
+        <Link
+          to="/upload"
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          New Analysis
+        </Link>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
+import "./App.css";
 
 // Import components
 import Dashboard from "./components/Dashboard";
@@ -10,7 +11,6 @@ import AnalysisProgress from "./components/AnalysisProgress";
 import ResultViewer from "./components/ResultViewer";
 import Home from "./components/Home";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import SingleReviewAnalysis from "./components/SingleReviewAnalysis";
 
 // Main App component with routing
@@ -27,21 +27,22 @@ function App() {
             {/* Main routes */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/upload" element={<FileUpload />} />
+            <Route path="/analyze" element={<SingleReviewAnalysis />} />
             <Route
               path="/analysis/:analysisId"
               element={<AnalysisProgress />}
             />
             <Route path="/results/:analysisId" element={<ResultViewer />} />
-            <Route
+            {/* <Route
               path="/review/:analysisId"
               element={<SingleReviewAnalysis />}
-            />
+            /> */}
 
             {/* Catch all for 404 */}
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </BrowserRouter>
   );

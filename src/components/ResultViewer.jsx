@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { saveAs } from "file-saver"; // Import FileSaver.js for file downloads
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import api from "../services/api";
@@ -36,17 +37,101 @@ function ResultViewer() {
   }, [analysisId, navigate]);
 
   const handleDownload = async (format) => {
+    if (!["pdf", "csv"].includes(format)) {
+      console.error('Invalid format specified. Must be "pdf" or "csv".');
+      return;
+    }
+
     try {
-      // Using window.open for direct download
-      window.open(
-        `${api.defaults.baseURL}/analysis/${analysisId}/download?format=${format}`,
-        "_blank"
+      console.log(
+        `Attempting to download ${format.toUpperCase()} for analysis ID: ${analysisId}`
       );
-    } catch (err) {
-      console.error(`Error downloading ${format} file:`, err);
-      setError(
-        `Failed to download ${format.toUpperCase()} file. Please try again later.`
+
+      // Determine the correct MIME type and Accept header based on format
+      const mimeType = format === "pdf" ? "application/pdf" : "text/csv";
+      const acceptHeader = format === "pdf" ? "application/pdf" : "text/csv";
+
+      // Make the GET request using your 'api' instance
+      const response = await api.get(
+        `/analysis/${analysisId}/download?format=${format}`,
+        {
+          responseType: "blob", // Essential for handling binary data like PDFs/CSVs
+          headers: {
+            Accept: acceptHeader,
+          },
+        }
       );
+
+      console.log(
+        `Received response for ${format.toUpperCase()}. Status: ${
+          response.status
+        }`
+      );
+      console.log("Response headers:", response.headers);
+      console.log(
+        `Response data type received: ${response.data.type}, size: ${response.data.size}`
+      );
+
+      const blob = new Blob([response.data], { type: mimeType });
+      console.log(`Created blob with type: ${blob.type}, size: ${blob.size}`);
+
+      // Extract filename from Content-Disposition header
+      const contentDisposition = response.headers["content-disposition"];
+      let filename = `${analysisId}.${format}`; // Default filename
+
+      if (contentDisposition) {
+        console.log("Content-Disposition header found:", contentDisposition);
+        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1];
+          console.log("Extracted filename from header:", filename);
+        } else {
+          console.warn(
+            "Could not extract filename from Content-Disposition header. Using default."
+          );
+        }
+      } else {
+        console.warn(
+          "Content-Disposition header not found. Using default filename."
+        );
+      }
+
+      // --- Using FileSaver.js to save the blob ---
+      // This replaces the createObjectURL and anchor click method
+      saveAs(blob, filename);
+      console.log(
+        `Download initiated using FileSaver.js for filename: ${filename}`
+      );
+
+      // Optional: Add a download success message
+      // setSuccess(`${format.toUpperCase()} file download initiated successfully`);
+    } catch (error) {
+      console.error(`Error downloading ${format.toUpperCase()} file:`, error);
+
+      // Log more details about the error response if available
+      if (error.response) {
+        console.error("Error response status:", error.response.status);
+        console.error("Error response data:", error.response.data);
+        console.error("Error response headers:", error.response.headers);
+
+        if (error.response.data instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            console.error(
+              "Error response data (attempted text read):",
+              reader.result
+            );
+          };
+          reader.onerror = () => {
+            console.error("Failed to read error response data as text.");
+          };
+          reader.readAsText(error.response.data);
+        }
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
     }
   };
 

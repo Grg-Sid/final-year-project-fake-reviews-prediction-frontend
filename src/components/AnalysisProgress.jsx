@@ -104,7 +104,7 @@ function AnalysisProgress() {
           </div>
 
           <div className="flex items-center mb-4">
-            <span className="font-medium mr-2">Status:</span>
+            <span className="font-medium mr-2">Status: </span>
             <span
               className={`px-2.5 py-0.5 rounded-full text-sm ${
                 error ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
@@ -120,26 +120,26 @@ function AnalysisProgress() {
         {analysis && (
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="mb-3">
-              <span className="font-medium">Analysis ID:</span>
+              <span className="font-medium">Analysis ID: </span>
               <span className="ml-2 text-gray-600">{analysis.analysis_id}</span>
             </div>
 
             <div className="mb-3">
-              <span className="font-medium">Started:</span>
+              <span className="font-medium">Started: </span>
               <span className="ml-2 text-gray-600">
                 {new Date(analysis.created_at).toLocaleString()}
               </span>
             </div>
 
             <div className="mb-3">
-              <span className="font-medium">File Name:</span>
+              <span className="font-medium">File Name: </span>
               <span className="ml-2 text-gray-600">
                 {analysis.file_name || "Not available"}
               </span>
             </div>
 
             <div>
-              <span className="font-medium">File Type:</span>
+              <span className="font-medium">File Type: </span>
               <span className="ml-2 text-gray-600">
                 {analysis.file_type?.toUpperCase() || "Unknown"}
               </span>

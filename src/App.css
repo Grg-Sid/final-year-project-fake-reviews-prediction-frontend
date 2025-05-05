@@ -9,9 +9,9 @@ body {
 #root {
   display: flex;
   flex-direction: column; /* Ensure the content takes up full height and width */
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  width: 100%; /* Full width */
+  justify-content: space-evenly; /* Center content vertically */
+  width: 90vw; /* 80% of the viewport width */
+  max-width: 100%; /* Optional: 80% of parent width */
   height: 100vh; /* Full height of the viewport */
   max-width: 100%; /* Ensure it does not overflow */
   margin: 0 auto; /* Centers #root if its width is less than parent */
@@ -56,10 +56,4 @@ body {
 
 .read-the-docs {
   color: #888;
-}
-
-@media screen and (max-width: 1280px) {
-  #root {
-    padding: 1rem; /* Adjust padding for smaller screens */
-  }
 }
