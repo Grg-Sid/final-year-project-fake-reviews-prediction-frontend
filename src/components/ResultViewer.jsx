@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { saveAs } from "file-saver"; // Import FileSaver.js for file downloads
+import { saveAs } from "file-saver";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import api from "../services/api";
@@ -20,6 +20,7 @@ function ResultViewer() {
       try {
         const response = await api.get(`/analysis/${analysisId}`);
         setAnalysis(response.data);
+        console.log("Analysis data fetched:", response.data);
 
         if (response.data.status !== "completed") {
           navigate(`/analysis/${analysisId}`);
@@ -55,7 +56,7 @@ function ResultViewer() {
       const response = await api.get(
         `/analysis/${analysisId}/download?format=${format}`,
         {
-          responseType: "blob", // Essential for handling binary data like PDFs/CSVs
+          responseType: "blob",
           headers: {
             Accept: acceptHeader,
           },
@@ -97,18 +98,13 @@ function ResultViewer() {
       }
 
       // --- Using FileSaver.js to save the blob ---
-      // This replaces the createObjectURL and anchor click method
       saveAs(blob, filename);
       console.log(
         `Download initiated using FileSaver.js for filename: ${filename}`
       );
-
-      // Optional: Add a download success message
-      // setSuccess(`${format.toUpperCase()} file download initiated successfully`);
     } catch (error) {
       console.error(`Error downloading ${format.toUpperCase()} file:`, error);
 
-      // Log more details about the error response if available
       if (error.response) {
         console.error("Error response status:", error.response.status);
         console.error("Error response data:", error.response.data);
@@ -161,12 +157,11 @@ function ResultViewer() {
   }
 
   // This is a placeholder since we don't have actual result data yet
-  // In a real app, you'd fetch summary data from the API
   const chartData = {
     labels: ["Authentic Reviews", "Flagged Reviews"],
     datasets: [
       {
-        data: [70, 30], // Example data - replace with actual statistics
+        data: [analysis.total_reviews, analysis.flagged_reviews],
         backgroundColor: ["#4ade80", "#f87171"],
         borderColor: ["#22c55e", "#ef4444"],
         borderWidth: 1,
@@ -212,18 +207,28 @@ function ResultViewer() {
 
                 {/* Placeholder metrics - replace with actual data in production */}
                 <div className="mb-3">
-                  <span className="font-medium">Total Reviews:</span>
-                  <span className="ml-2 text-gray-600">100</span>
+                  <span className="font-medium">Total Reviews: </span>
+                  <span className="ml-2 text-gray-600">
+                    {analysis.total_reviews}
+                  </span>
                 </div>
 
                 <div className="mb-3">
-                  <span className="font-medium">Flagged Reviews:</span>
-                  <span className="ml-2 text-gray-600">30 (30%)</span>
+                  <span className="font-medium">Flagged Reviews: </span>
+                  <span className="ml-2 text-gray-600">
+                    {analysis.flagged_reviews}
+                  </span>
                 </div>
 
                 <div>
-                  <span className="font-medium">Average Confidence:</span>
-                  <span className="ml-2 text-gray-600">0.78</span>
+                  <span className="font-medium">Flagged Percentage: </span>
+                  <span className="ml-2 text-gray-600">
+                    {(
+                      (analysis.flagged_reviews / analysis.total_reviews) *
+                      100
+                    ).toFixed(2)}{" "}
+                    %
+                  </span>
                 </div>
               </div>
             </div>
