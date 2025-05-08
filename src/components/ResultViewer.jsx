@@ -133,16 +133,40 @@ function ResultViewer() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-10">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "10px",
+        }}
+      >
+        <div
+          style={{
+            animation: "spin 1s linear infinite",
+            borderRadius: "50%",
+            height: "48px",
+            width: "48px",
+            border: "4px solid #3b82f6",
+            borderTopColor: "transparent",
+          }}
+        ></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-        <h3 className="font-bold">Error</h3>
+      <div
+        style={{
+          backgroundColor: "#fef2f2",
+          border: "1px solid #fecaca",
+          color: "#b91c1c",
+          padding: "16px",
+          borderRadius: "8px",
+        }}
+      >
+        <h3 style={{ fontWeight: "bold" }}>Error</h3>
         <p>{error}</p>
       </div>
     );
@@ -150,7 +174,15 @@ function ResultViewer() {
 
   if (!analysis) {
     return (
-      <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded-lg">
+      <div
+        style={{
+          backgroundColor: "#fef9c3",
+          border: "1px solid #fde68a",
+          color: "#b45309",
+          padding: "16px",
+          borderRadius: "8px",
+        }}
+      >
         No analysis found with ID: {analysisId}
       </div>
     );
@@ -170,17 +202,47 @@ function ResultViewer() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Analysis Results</h1>
+    <div className="container my-1">
+      <h2 className="fw-bold text-center mb-4">Analysis Results</h2>
 
-      <div className="bg-white rounded-lg shadow mb-6">
-        <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Summary</h2>
+      <div
+        style={{
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          marginBottom: "24px",
+        }}
+      >
+        <div style={{ padding: "24px" }}>
+          <h2
+            style={{
+              fontSize: "20px",
+              fontWeight: "600",
+              marginBottom: "16px",
+            }}
+          >
+            Summary
+          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "24px",
+              marginBottom: "24px",
+            }}
+          >
             <div>
-              <h3 className="text-lg font-medium mb-3">Result Distribution</h3>
-              <div className="h-64">
+              <h3
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  marginBottom: "12px",
+                }}
+              >
+                Result Distribution
+              </h3>
+              <div style={{ height: "256px" }}>
                 <Pie
                   data={chartData}
                   options={{ maintainAspectRatio: false }}
@@ -189,40 +251,56 @@ function ResultViewer() {
             </div>
 
             <div>
-              <h3 className="text-lg font-medium mb-3">Key Metrics</h3>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="mb-3">
-                  <span className="font-medium">Analysis ID:</span>
-                  <span className="ml-2 text-gray-600">
+              <h3
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  marginBottom: "12px",
+                }}
+              >
+                Key Metrics
+              </h3>
+              <div
+                style={{
+                  backgroundColor: "#f9fafb",
+                  borderRadius: "8px",
+                  padding: "16px",
+                }}
+              >
+                <div style={{ marginBottom: "12px" }}>
+                  <span style={{ fontWeight: "500" }}>Analysis ID:</span>
+                  <span style={{ marginLeft: "8px", color: "#4b5563" }}>
                     {analysis.analysis_id}
                   </span>
                 </div>
 
-                <div className="mb-3">
-                  <span className="font-medium">Completed:</span>
-                  <span className="ml-2 text-gray-600">
+                <div style={{ marginBottom: "12px" }}>
+                  <span style={{ fontWeight: "500" }}>Completed:</span>
+                  <span style={{ marginLeft: "8px", color: "#4b5563" }}>
                     {new Date(analysis.updated_at).toLocaleString()}
                   </span>
                 </div>
 
                 {/* Placeholder metrics - replace with actual data in production */}
-                <div className="mb-3">
-                  <span className="font-medium">Total Reviews: </span>
-                  <span className="ml-2 text-gray-600">
+                <div style={{ marginBottom: "12px" }}>
+                  <span style={{ fontWeight: "500" }}>Total Reviews: </span>
+                  <span style={{ marginLeft: "8px", color: "#4b5563" }}>
                     {analysis.total_reviews}
                   </span>
                 </div>
 
-                <div className="mb-3">
-                  <span className="font-medium">Flagged Reviews: </span>
-                  <span className="ml-2 text-gray-600">
+                <div style={{ marginBottom: "12px" }}>
+                  <span style={{ fontWeight: "500" }}>Flagged Reviews: </span>
+                  <span style={{ marginLeft: "8px", color: "#4b5563" }}>
                     {analysis.flagged_reviews}
                   </span>
                 </div>
 
                 <div>
-                  <span className="font-medium">Flagged Percentage: </span>
-                  <span className="ml-2 text-gray-600">
+                  <span style={{ fontWeight: "500" }}>
+                    Flagged Percentage:{" "}
+                  </span>
+                  <span style={{ marginLeft: "8px", color: "#4b5563" }}>
                     {(
                       (analysis.flagged_reviews / analysis.total_reviews) *
                       100
@@ -237,19 +315,40 @@ function ResultViewer() {
       </div>
 
       {/* Download options */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Download Results</h2>
-        <p className="text-gray-600 mb-4">
+      <div
+        style={{
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          padding: "24px",
+          marginBottom: "24px",
+        }}
+      >
+        <h2
+          style={{ fontSize: "20px", fontWeight: "600", marginBottom: "16px" }}
+        >
+          Download Results
+        </h2>
+        <p style={{ color: "#4b5563", marginBottom: "16px" }}>
           Download the complete analysis results in your preferred format.
         </p>
 
-        <div className="flex flex-wrap gap-4">
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
           <button
-            className="flex items-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 16px",
+              backgroundColor: "#dc2626",
+              color: "#ffffff",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+            }}
             onClick={() => handleDownload("pdf")}
           >
             <svg
-              className="w-5 h-5 mr-2"
+              style={{ width: "20px", height: "20px", marginRight: "8px" }}
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -264,11 +363,20 @@ function ResultViewer() {
           </button>
 
           <button
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 16px",
+              backgroundColor: "#16a34a",
+              color: "#ffffff",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+            }}
             onClick={() => handleDownload("csv")}
           >
             <svg
-              className="w-5 h-5 mr-2"
+              style={{ width: "20px", height: "20px", marginRight: "8px" }}
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -285,16 +393,36 @@ function ResultViewer() {
       </div>
 
       {/* Actions */}
-      <div className="flex justify-between mb-6">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "24px",
+        }}
+      >
         <button
-          className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+          style={{
+            padding: "8px 16px",
+            color: "#374151",
+            backgroundColor: "#e5e7eb",
+            borderRadius: "4px",
+            border: "none",
+            cursor: "pointer",
+          }}
           onClick={() => navigate("/")}
         >
           Back to Home
         </button>
 
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          style={{
+            padding: "8px 16px",
+            backgroundColor: "#2563eb",
+            color: "#ffffff",
+            borderRadius: "4px",
+            border: "none",
+            cursor: "pointer",
+          }}
           onClick={() => navigate("/upload")}
         >
           Analyze New File

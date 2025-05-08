@@ -10,52 +10,90 @@ function Header() {
   };
 
   return (
-    <header className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Link to="/" className="text-xl font-bold text-gray-800">
+    <header
+      style={{
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <div className="container">
+        <div className="d-flex justify-content-between align-items-center py-3">
+          <div className="d-flex align-items-center">
+            <div>
+              <Link
+                to="/"
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: "#4a4a4a",
+                  textDecoration: "none",
+                }}
+              >
                 ReviewAnalyzer
               </Link>
             </div>
-            <nav className="ml-8 space-x-4 hidden md:flex">
+            <nav className="ml-3 d-none d-md-flex">
               <Link
                 to="/"
-                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive("/")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                style={{
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  backgroundColor: isActive("/") ? "#f8f9fa" : "transparent",
+                  color: isActive("/") ? "#212529" : "#6c757d",
+                  textDecoration: "none",
+                  marginRight: "0.5rem",
+                }}
               >
                 Home
               </Link>
               <Link
                 to="/upload"
-                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive("/upload")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                style={{
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  backgroundColor: isActive("/upload")
+                    ? "#f8f9fa"
+                    : "transparent",
+                  color: isActive("/upload") ? "#212529" : "#6c757d",
+                  textDecoration: "none",
+                  marginRight: "0.5rem",
+                }}
               >
                 Batch Analysis
               </Link>
               <Link
                 to="/analyze"
-                className={`px-3 py-2 rounded-md text-sm font-medium ${
-                  isActive("/analyze")
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }`}
+                style={{
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  backgroundColor: isActive("/analyze")
+                    ? "#f8f9fa"
+                    : "transparent",
+                  color: isActive("/analyze") ? "#212529" : "#6c757d",
+                  textDecoration: "none",
+                }}
               >
                 Single Review
               </Link>
             </nav>
           </div>
-          <div className="flex items-center">
+          <div className="d-flex align-items-center">
             <Link
               to="/dashboard"
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              style={{
+                padding: "0.5rem 1rem",
+                borderRadius: "0.25rem",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                color: "#6c757d",
+                textDecoration: "none",
+              }}
             >
               Dashboard
             </Link>

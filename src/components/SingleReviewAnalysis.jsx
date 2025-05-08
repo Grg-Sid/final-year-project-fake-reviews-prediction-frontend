@@ -1,6 +1,29 @@
 import React, { useState } from "react";
 import api from "../services/api";
 
+const inputStyle = {
+  width: "100%",
+  border: "1px solid #d1d5db",
+  borderRadius: "0.25rem",
+  padding: "0.5rem",
+  outline: "none",
+};
+
+const labelStyle = {
+  display: "block",
+  color: "#4a4a4a",
+  fontWeight: 500,
+  marginBottom: "0.5rem",
+};
+
+const sectionBoxStyle = {
+  backgroundColor: "white",
+  borderRadius: "0.5rem",
+  boxShadow: "0 0.5rem 1rem rgba(0, 0, 0, 0.1)",
+  padding: "1.5rem",
+  marginBottom: "1.5rem",
+};
+
 function SingleReviewAnalysis() {
   const [formData, setFormData] = useState({
     review_content: "",
@@ -23,7 +46,6 @@ function SingleReviewAnalysis() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.review_content.trim()) {
       setError("Review content cannot be empty");
       return;
@@ -33,7 +55,6 @@ function SingleReviewAnalysis() {
       setLoading(true);
       setError("");
       setResult(null);
-
       const response = await api.post("/predict", formData);
       setResult(response.data);
     } catch (err) {
@@ -48,16 +69,13 @@ function SingleReviewAnalysis() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Analyze Single Review</h1>
+    <div className="container my-1">
+      <h2 className="fw-bold text-center mb-4">Upload Reviews File</h2>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
+      <div style={sectionBoxStyle}>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-medium mb-2"
-              htmlFor="review_content"
-            >
+          <div style={{ marginBottom: "1rem" }}>
+            <label htmlFor="review_content" style={labelStyle}>
               Review Content *
             </label>
             <textarea
@@ -66,97 +84,88 @@ function SingleReviewAnalysis() {
               value={formData.review_content}
               onChange={handleChange}
               rows="5"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter the review text here..."
+              style={inputStyle}
               required
-            ></textarea>
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div>
-              <label
-                className="block text-gray-700 font-medium mb-2"
-                htmlFor="useful_count"
-              >
-                Useful Votes
-              </label>
-              <input
-                type="number"
-                id="useful_count"
-                name="useful_count"
-                value={formData.useful_count}
-                onChange={handleChange}
-                min="0"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label
-                className="block text-gray-700 font-medium mb-2"
-                htmlFor="review_count"
-              >
-                Total Reviews
-              </label>
-              <input
-                type="number"
-                id="review_count"
-                name="review_count"
-                value={formData.review_count}
-                onChange={handleChange}
-                min="0"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label
-                className="block text-gray-700 font-medium mb-2"
-                htmlFor="friend_count"
-              >
-                Friend Count
-              </label>
-              <input
-                type="number"
-                id="friend_count"
-                name="friend_count"
-                value={formData.friend_count}
-                onChange={handleChange}
-                min="0"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+          <div className="row" style={{ marginBottom: "1.5rem" }}>
+            {[
+              { id: "useful_count", label: "Useful Votes" },
+              { id: "review_count", label: "Total Reviews" },
+              { id: "friend_count", label: "Friend Count" },
+            ].map(({ id, label }) => (
+              <div className="col-md-4" key={id}>
+                <label htmlFor={id} style={labelStyle}>
+                  {label}
+                </label>
+                <input
+                  type="number"
+                  id={id}
+                  name={id}
+                  value={formData[id]}
+                  onChange={handleChange}
+                  min="0"
+                  style={inputStyle}
+                />
+              </div>
+            ))}
           </div>
 
-          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+          {error && (
+            <div
+              style={{
+                color: "red",
+                fontSize: "0.875rem",
+                marginBottom: "1rem",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
-          <div className="flex justify-center mt-6">
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
               disabled={loading}
+              style={{
+                padding: "0.5rem 1.5rem",
+                backgroundColor: "#007bff",
+                color: "white",
+                borderRadius: "0.25rem",
+                border: "none",
+                cursor: "pointer",
+                opacity: loading ? 0.5 : 1,
+              }}
             >
               {loading ? (
-                <span className="flex items-center">
+                <span style={{ display: "flex", alignItems: "center" }}>
                   <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    style={{
+                      animation: "spin 1s linear infinite",
+                      marginRight: "0.5rem",
+                      height: "1rem",
+                      width: "1rem",
+                      color: "white",
+                    }}
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                   >
                     <circle
-                      className="opacity-25"
                       cx="12"
                       cy="12"
                       r="10"
                       stroke="currentColor"
                       strokeWidth="4"
-                    ></circle>
+                      style={{ opacity: 0.25 }}
+                    />
                     <path
-                      className="opacity-75"
                       fill="currentColor"
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
+                      style={{ opacity: 0.75 }}
+                    />
                   </svg>
                   Analyzing...
                 </span>
@@ -168,54 +177,74 @@ function SingleReviewAnalysis() {
         </form>
       </div>
 
-      {/* Results display */}
       {result && (
         <div
-          className={`bg-white rounded-lg shadow p-6 mb-6 border-l-4 ${
-            result.flagged ? "border-red-500" : "border-green-500"
-          }`}
+          style={{
+            ...sectionBoxStyle,
+            borderLeft: `4px solid ${result.flagged ? "red" : "green"}`,
+          }}
         >
-          <h2 className="text-xl font-semibold mb-4">Analysis Result</h2>
+          <h2
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: "600",
+              marginBottom: "1rem",
+            }}
+          >
+            Analysis Result
+          </h2>
 
-          <div className="mb-4">
-            <div className="flex items-center mb-3">
-              <span className="font-medium mr-2">Status: </span>
-              {result.flagged ? (
-                <span className="bg-red-100 text-red-800 text-sm px-2.5 py-0.5 rounded-full">
-                  Flagged ⚠️
-                </span>
-              ) : (
-                <span className="bg-green-100 text-green-800 text-sm px-2.5 py-0.5 rounded-full">
-                  Authentic ✓
-                </span>
-              )}
+          <div style={{ marginBottom: "1rem" }}>
+            <div style={{ marginBottom: "0.75rem" }}>
+              <span style={{ fontWeight: "500", marginRight: "0.5rem" }}>
+                Status:
+              </span>
+              <span
+                style={{
+                  backgroundColor: result.flagged ? "#f8d7da" : "#d4edda",
+                  color: result.flagged ? "#721c24" : "#155724",
+                  fontSize: "0.875rem",
+                  padding: "0.25rem 0.625rem",
+                  borderRadius: "9999px",
+                }}
+              >
+                {result.flagged ? "Flagged ⚠️" : "Authentic ✓"}
+              </span>
             </div>
 
-            <div className="mb-3">
-              <span className="font-medium">Confidence: </span>
-              <span className="ml-2">
+            <div style={{ marginBottom: "0.75rem" }}>
+              <span style={{ fontWeight: "500" }}>Confidence:</span>
+              <span style={{ marginLeft: "0.5rem" }}>
                 {(result.confidence * 100).toFixed(1)}%
               </span>
             </div>
 
             <div>
-              <span className="font-medium">Process Time: </span>
-              <span className="ml-2">
+              <span style={{ fontWeight: "500" }}>Process Time:</span>
+              <span style={{ marginLeft: "0.5rem" }}>
                 {result.process_time.toFixed(3)} seconds
               </span>
             </div>
           </div>
 
-          <div className="bg-gray-50 rounded p-4 mb-4">
-            <h3 className="font-medium mb-2">Review Content: </h3>
-            <p className="text-gray-700">{formData.review_content}</p>
+          <div
+            style={{
+              backgroundColor: "#f8f9fa",
+              borderRadius: "0.25rem",
+              padding: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <h3 style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
+              Review Content:
+            </h3>
+            <p style={{ color: "#4a4a4a" }}>{formData.review_content}</p>
           </div>
 
-          <div className="text-sm text-gray-500">
+          <div style={{ fontSize: "0.875rem", color: "#6c757d" }}>
             <p>
               This result is based on an automated analysis. For more accurate
-              results, please consider submitting multiple reviews via batch
-              processing.
+              insights, consider using batch processing with multiple reviews.
             </p>
           </div>
         </div>

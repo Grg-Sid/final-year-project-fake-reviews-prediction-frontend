@@ -1,5 +1,3 @@
-// src/components/AnalysisProgress.jsx
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -17,28 +15,10 @@ function AnalysisProgress() {
       try {
         const response = await api.get(`/analysis/${analysisId}`);
         setAnalysis(response.data);
-
-        // Calculate progress based on status
-        switch (response.data.status) {
-          case "queued":
-            setProgress(10);
-            break;
-          case "processing":
-            setProgress(50);
-            break;
-          case "completed":
-            setProgress(100);
-            // Redirect to results page if completed
-            navigate(`/results/${analysisId}`);
-            break;
-          case "failed":
-            setError("Analysis failed. Please try again or contact support.");
-            setProgress(0);
-            break;
-          default:
-            setProgress(25);
+        setProgress(response.data.progress || 0); // Set initial progress
+        if (response.data.progress === 100) {
+          navigate(`/results/${analysisId}`); // Redirect if completed
         }
-
         setLoading(false);
       } catch (err) {
         console.error("Error fetching analysis:", err);
@@ -78,92 +58,82 @@ function AnalysisProgress() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-10">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+      <div className="d-flex justify-content-center align-items-center p-5">
+        <div
+          className="spinner-border text-primary"
+          style={{ width: "3rem", height: "3rem" }}
+          role="status"
+        ></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Analysis in Progress</h1>
+    <div className="container my-1">
+      <h2 className="fw-bold text-center mb-4">Analysis in Progress</h2>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Analysis Status</h2>
+      <div className="card shadow p-4 mb-5">
+        <div className="mb-4">
+          <h2 className="h5">Analysis Status</h2>
 
-          <div className="mb-4">
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className={`h-2.5 rounded-full ${
-                  error ? "bg-red-600" : "bg-blue-600"
-                }`}
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
+          <div className="progress mb-4" style={{ height: "2.5rem" }}>
+            <div
+              className={`progress-bar ${error ? "bg-danger" : "bg-primary"}`}
+              role="progressbar"
+              style={{ width: `${progress}%` }}
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
 
-          <div className="flex items-center mb-4">
-            <span className="font-medium mr-2">Status: </span>
+          <div className="d-flex align-items-center mb-4">
+            <span className="fw-medium me-2">Status: </span>
             <span
-              className={`px-2.5 py-0.5 rounded-full text-sm ${
-                error ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
-              }`}
+              className={`badge ${
+                error ? "bg-danger" : "bg-primary"
+              } text-white`}
             >
               {error ? "Error" : analysis?.status || "Processing"}
             </span>
           </div>
 
-          <p className="text-gray-600">{error || getStatusMessage()}</p>
+          <p>{error || getStatusMessage()}</p>
         </div>
 
         {analysis && (
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-light p-4 rounded">
             <div className="mb-3">
-              <span className="font-medium">Analysis ID: </span>
-              <span className="ml-2 text-gray-600">{analysis.analysis_id}</span>
+              <strong>Analysis ID:</strong> <span>{analysis.analysis_id}</span>
             </div>
-
             <div className="mb-3">
-              <span className="font-medium">Started: </span>
-              <span className="ml-2 text-gray-600">
-                {new Date(analysis.created_at).toLocaleString()}
-              </span>
+              <strong>Started:</strong>{" "}
+              <span>{new Date(analysis.created_at).toLocaleString()}</span>
             </div>
-
             <div className="mb-3">
-              <span className="font-medium">File Name: </span>
-              <span className="ml-2 text-gray-600">
-                {analysis.file_name || "Not available"}
-              </span>
+              <strong>File Name:</strong>{" "}
+              <span>{analysis.file_name || "Not available"}</span>
             </div>
-
             <div>
-              <span className="font-medium">File Type: </span>
-              <span className="ml-2 text-gray-600">
-                {analysis.file_type?.toUpperCase() || "Unknown"}
-              </span>
+              <strong>File Type:</strong>{" "}
+              {analysis.file_name?.split(".").pop() || "Unknown"}
             </div>
           </div>
         )}
       </div>
 
       <div className="text-center">
-        <p className="text-gray-600 mb-4">
+        <p className="text-muted mb-4">
           This analysis is being processed. You can close this page and check
           the results later by returning to the dashboard.
         </p>
 
-        <div className="flex justify-center space-x-4">
-          <button
-            className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
-            onClick={() => navigate("/")}
-          >
+        <div className="d-flex justify-content-center gap-3">
+          <button className="btn btn-secondary" onClick={() => navigate("/")}>
             Back to Home
           </button>
-
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="btn btn-primary"
             onClick={() => navigate("/dashboard")}
           >
             Go to Dashboard
